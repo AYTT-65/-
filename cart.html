@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block title %}طلبي{% endblock %}
+{% block page_heading %}المنتجات المطلوبة{% endblock %}
+{% block content %}
+<section class="section-toolbar"><div><p class="muted">راجع المنتجات والكميات قبل تأكيد الطلب.</p></div><a href="{{ url_for('shop') }}" class="btn btn-light">إضافة منتج</a></section>
+<section class="panel cart-panel"><div class="cart-items">{% for item in items %}<article class="cart-item"><div class="cart-item-image">{% if item.product.image %}<img src="{{ url_for('static', filename=item.product.image) }}" alt="{{ item.product.name }}">{% else %}<span>{{ item.product.icon }}</span>{% endif %}</div><div class="cart-item-info"><h2>{{ item.product.name }}</h2><p>{{ item.product.price|currency }} × {{ item.quantity }}</p><strong>{{ item.line_total|currency }}</strong></div><form method="post" action="{{ url_for('remove_from_cart', product_id=item.product.id) }}"><button class="icon-btn danger" title="حذف المنتج">⌫</button></form></article>{% else %}<div class="empty-state">السلة فارغة.</div>{% endfor %}</div>{% if items %}<div class="cart-summary"><span>المبلغ الكامل</span><strong>{{ total|currency }}</strong><a href="{{ url_for('checkout') }}" class="btn btn-primary">متابعة الحجز</a></div>{% endif %}</section>
+{% endblock %}

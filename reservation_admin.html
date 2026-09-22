@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block title %}إدارة الحجوزات{% endblock %}
+{% block page_heading %}إدارة الحجوزات{% endblock %}
+{% block content %}
+<section class="section-toolbar"><div><p class="muted">حدّث مرحلة الطلب ليشاهدها الزبون في صفحة المتابعة.</p></div><a href="{{ url_for('dashboard') }}" class="btn btn-light">لوحة التحكم</a></section>
+<section class="panel reservation-admin-list">{% for reservation in reservations %}<article class="admin-reservation"><div><strong>{{ reservation.product_name }}</strong><small>الزبون: {{ reservation.customer_name }} · رمز الحساب: {{ reservation.account_code }}</small><small>{{ reservation.customer_number }} · {{ reservation.governorate }} · {{ reservation.customer_address }}</small></div><form method="post" action="{{ url_for('update_reservation_status', reservation_id=reservation.id) }}"><select name="status">{% for status in order_statuses %}<option value="{{ status }}" {% if status == reservation.status %}selected{% endif %}>{{ status }}</option>{% endfor %}</select><button class="btn btn-primary" type="submit">تحديث الحالة</button></form></article>{% else %}<div class="empty-state">لا توجد حجوزات حتى الآن.</div>{% endfor %}</section>
+{% endblock %}

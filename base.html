@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}متجر مركز الايباد{% endblock %} | متجر مركز الايباد</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/storefront.css') }}">
+    {% if request.endpoint in ['customer_entry', 'register'] %}<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">{% endif %}
+    {% if request.endpoint in ['shop', 'store_products', 'store_offers', 'store_search', 'store_category', 'product_detail', 'cart', 'checkout', 'orders', 'reserve_product', 'account', 'admin_users'] %}<link rel="stylesheet" href="{{ url_for('static', filename='css/mobile-store.css') }}">{% endif %}
+    {% if request.endpoint == 'admin_users' %}<link rel="stylesheet" href="{{ url_for('static', filename='css/admin-users.css') }}">{% endif %}
+</head>
+<body>
+    {% set storefront = request.endpoint in ['shop', 'store_products', 'store_offers', 'store_search', 'store_category', 'product_detail', 'cart', 'checkout', 'orders', 'reserve_product', 'account', 'admin_users'] %}
+    {% if request.endpoint in ['customer_entry', 'register'] %}
+    <main class="auth-shell">
+        <div class="auth-glow auth-glow-one"></div><div class="auth-glow auth-glow-two"></div>
+        <section class="auth-brand"><span class="brand-mark">م</span><span><strong>مركز الآيباد</strong><small>أجهزة أصلية. تجربة أذكى.</small></span></section>
+        {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<div class="flash-stack auth-flashes">{% for category, message in messages %}<div class="flash {{ category }}"><span>{{ '✓' if category == 'success' else '!' }}</span>{{ message }}</div>{% endfor %}</div>{% endif %}{% endwith %}
+    {% elif storefront %}
+    <div class="storefront-shell">
+        <header class="store-header">
+            <a href="{{ url_for('shop') }}" class="store-brand"><span class="brand-mark">م</span><span><strong>مركز الآيباد</strong><small>أجهزة وإكسسوارات</small></span></a>
+            <button class="menu-toggle icon-button" type="button" data-menu-toggle aria-label="فتح القائمة">☰</button>
+            <div class="store-actions"><form class="header-search" action="{{ url_for('store_search') }}"><input name="q" placeholder="ابحث عن منتج" aria-label="بحث"><button class="icon-button" type="submit" aria-label="بحث">⌕</button></form></div>
+        </header>
+        <aside class="mobile-menu" data-mobile-menu><button class="menu-close icon-button" type="button" data-menu-close aria-label="إغلاق القائمة">×</button><div class="menu-profile"><span class="brand-mark">م</span><strong>مرحبًا {{ session.get('customer_name', '') }}</strong></div>{% if 'shop' in user_permissions or is_admin %}<a href="{{ url_for('shop') }}">🏠 الرئيسية</a>{% endif %}{% if 'store_products' in user_permissions or is_admin %}<a href="{{ url_for('store_products') }}">📦 المنتجات</a>{% endif %}{% if is_admin %}<a href="{{ url_for('admin_users') }}">👥 إدارة المستخدمين والصلاحيات</a>{% endif %}{% if 'products' in user_permissions or is_admin %}<a href="{{ url_for('products') }}">🗂️ إدارة المنتجات وحذف منتج</a>{% endif %}{% if 'new_product' in user_permissions or is_admin %}<a href="{{ url_for('new_product') }}">＋ إضافة منتج</a>{% endif %}{% if 'store_offers' in user_permissions or is_admin %}<a href="{{ url_for('store_offers') }}">🏷️ العروض</a>{% endif %}{% if 'orders' in user_permissions or is_admin %}<a href="{{ url_for('orders') }}">🚚 متابعة الطلب</a>{% endif %}{% if 'account' in user_permissions or is_admin %}<a href="{{ url_for('account') }}">👤 حسابي</a>{% endif %}{% if 'cart' in user_permissions or is_admin %}<a href="{{ url_for('cart') }}">🛒 السلة <b>{{ cart_count }}</b></a>{% endif %}<a href="{{ url_for('logout') }}">🚪 تسجيل الخروج</a></aside>
+        <main class="store-main">
+            {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<div class="flash-stack">{% for category, message in messages %}<div class="flash {{ category }}"><span>{{ '✓' if category == 'success' else '!' }}</span>{{ message }}</div>{% endfor %}</div>{% endif %}{% endwith %}
+    {% else %}
+    <div class="app-shell">
+        <aside class="sidebar">
+            <div class="brand"><span class="brand-mark">م</span><span><strong>مركز الايباد</strong><small>متجر الأجهزة والإكسسوارات</small></span></div>
+            <nav class="main-nav">
+                {% if is_admin or 'dashboard' in user_permissions %}<a class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}" href="{{ url_for('dashboard') }}"><span>⌂</span> لوحة التحكم</a>{% endif %}
+                {% if is_admin or 'shop' in user_permissions %}<a class="nav-link {% if request.endpoint == 'shop' %}active{% endif %}" href="{{ url_for('shop') }}"><span>◈</span> واجهة البيع</a>{% endif %}
+                {% if is_admin or 'orders' in user_permissions %}<a class="nav-link {% if request.endpoint == 'orders' %}active{% endif %}" href="{{ url_for('orders') }}"><span>✓</span> متابعة الطلبات</a>{% endif %}
+                {% if is_admin or 'products' in user_permissions %}<a class="nav-link {% if request.endpoint in ['products', 'new_product', 'edit_product'] %}active{% endif %}" href="{{ url_for('products') }}"><span>▦</span> المنتجات</a>{% endif %}
+                {% if is_admin or 'sales' in user_permissions %}<a class="nav-link {% if request.endpoint in ['sales', 'sale_detail'] %}active{% endif %}" href="{{ url_for('sales') }}"><span>↗</span> المبيعات والفواتير</a>{% endif %}
+                {% if is_admin or 'reservation_admin' in user_permissions %}<a class="nav-link {% if request.endpoint == 'reservation_admin' %}active{% endif %}" href="{{ url_for('reservation_admin') }}"><span>◷</span> إدارة الحجوزات</a>{% endif %}
+                {% if is_admin or 'banners_admin' in user_permissions %}<a class="nav-link {% if request.endpoint in ['banners_admin', 'new_banner', 'edit_banner'] %}active{% endif %}" href="{{ url_for('banners_admin') }}"><span>✦</span> إعلانات المتجر</a>{% endif %}
+            </nav>
+            <div class="sidebar-foot"><div class="status-dot"></div><span>النظام يعمل بشكل طبيعي</span></div>
+        </aside>
+        <main class="main-content">
+            <header class="topbar"><div><p class="eyebrow">مساحة العمل / {{ page_section|default('الرئيسية') }}</p><h1>{% block page_heading %}مرحبًا بك في نقطة{% endblock %}</h1></div><div class="topbar-actions"><span class="date-chip">{{ now().strftime('%A، %d %B %Y') if now is defined else 'اليوم' }}</span><div class="avatar">م</div></div></header>
+            {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<div class="flash-stack">{% for category, message in messages %}<div class="flash {{ category }}"><span>{{ '✓' if category == 'success' else '!' }}</span>{{ message }}</div>{% endfor %}</div>{% endif %}{% endwith %}
+    {% endif %}
+    {% block content %}{% endblock %}
+    {% if request.endpoint in ['customer_entry', 'register'] %}<p class="auth-footer">© مركز الآيباد · وجهتك الموثوقة للتقنية</p></main>{% elif storefront %}<footer class="store-footer"><strong>مركز الآيباد</strong><span>تقنية أقرب. اختيار أذكى.</span><a href="{{ url_for('logout') }}">تسجيل الخروج</a></footer><nav class="mobile-bottom-nav" aria-label="التنقل الرئيسي"><a href="{{ url_for('shop') }}" class="{% if request.endpoint == 'shop' %}active{% endif %}"><span>⌂</span>الرئيسية</a><a href="{{ url_for('store_products') }}" class="{% if request.endpoint in ['store_products', 'store_category', 'store_search'] %}active{% endif %}"><span>▦</span>المنتجات</a><a href="{{ url_for('store_offers') }}" class="{% if request.endpoint == 'store_offers' %}active{% endif %}"><span>✦</span>العروض</a><a href="{{ url_for('cart') }}" class="{% if request.endpoint in ['cart', 'checkout'] %}active{% endif %}"><span>🛒<b>{{ cart_count }}</b></span>السلة</a><a href="{{ url_for('account') }}" class="{% if request.endpoint == 'account' %}active{% endif %}"><span>◉</span>حسابي</a></nav></main></div>{% else %}</main></div>{% endif %}
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

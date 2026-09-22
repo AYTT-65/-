@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}إنشاء حساب{% endblock %}
+{% block content %}
+<section class="customer-entry register-entry">
+    <div class="entry-copy">
+        <div class="login-ad-slider" data-login-slider aria-live="polite">
+            {% for product in login_products|default([]) %}
+            <article class="login-ad-slide {% if loop.first %}is-active{% endif %}">
+                <div class="login-ad-image"><img src="{{ url_for('static', filename=product.image) }}" alt="صورة المنتج"></div>
+            </article>
+            {% else %}<div class="login-ad-empty">أنشئ حسابك وابدأ التسوق بسهولة.</div>{% endfor %}
+            <div class="login-ad-dots">{% for product in login_products|default([]) %}<button class="login-ad-dot {% if loop.first %}is-active{% endif %}" data-login-dot="{{ loop.index0 }}" aria-label="تغيير الإعلان"></button>{% endfor %}</div>
+        </div>
+    </div>
+    <form method="post" class="panel customer-form">
+        <div class="form-heading"><span class="form-icon">＋</span><h2>إنشاء حساب جديد</h2><p>سجّل حسابك وادخل إلى المتجر مباشرة.</p></div>
+        <label>اسم المستخدم <span>*</span><input required name="login_name" autocomplete="username" placeholder="مثال: أحمد"></label>
+        <label>البريد الإلكتروني <span>*</span><input required type="email" name="email" autocomplete="email" placeholder="name@example.com"></label>
+        <label>رقم الهاتف<input name="phone" autocomplete="tel" placeholder="07xxxxxxxxx"></label>
+        <label>كلمة المرور <span>*</span><input required type="password" name="password" autocomplete="new-password" placeholder="6 أحرف على الأقل"></label>
+        <label>تأكيد كلمة المرور <span>*</span><input required type="password" name="password_confirmation" autocomplete="new-password" placeholder="أعد كتابة كلمة المرور"></label>
+        <button class="btn btn-primary btn-wide" type="submit">إنشاء الحساب <span>←</span></button>
+        <p class="register-line">لديك حساب؟ <a href="{{ url_for('customer_entry') }}">تسجيل الدخول</a></p>
+    </form>
+</section>
+{% endblock %}

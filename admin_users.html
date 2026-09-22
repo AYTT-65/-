@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}إدارة المستخدمين{% endblock %}
+{% block page_heading %}إدارة المستخدمين والصلاحيات{% endblock %}
+{% block content %}
+<section class="user-admin-layout">
+    <div class="panel users-list-panel">
+        <div class="panel-heading"><div><h2>المستخدمون المسجلون</h2><p>اضغط على أي مستخدم لعرض معلوماته وتعديل صلاحياته.</p></div><strong class="users-count">{{ users|length }} مستخدم</strong></div>
+        <form method="get" class="user-search-form"><input name="q" value="{{ query }}" placeholder="ابحث بالاسم أو البريد أو رقم الهاتف"><button class="btn btn-primary" type="submit">بحث</button></form>
+        <div class="users-list">
+            {% for user in users %}
+            <details class="user-card">
+                <summary><span class="user-avatar">{{ user.login_name[:1] }}</span><span class="user-summary"><strong>{{ user.login_name }}{% if user.is_admin %}<span class="admin-badge">المدير</span>{% endif %}</strong><small>{{ user.email or user.phone or 'لا توجد معلومات اتصال' }}</small></span><span class="user-status {% if user.active %}is-active{% else %}is-disabled{% endif %}">{{ 'نشط' if user.active else 'معطل' }}</span></summary>
+                <div class="user-card-body">
+                    <div class="user-info-grid"><div><small>اسم المستخدم</small><strong>{{ user.login_name }}</strong></div><div><small>البريد الإلكتروني</small><strong>{{ user.email or 'غير مضاف' }}</strong></div><div><small>رقم الهاتف</small><strong>{{ user.phone or 'غير مضاف' }}</strong></div><div><small>رمز الحساب</small><strong>{{ user.account_code }}</strong></div><div><small>تاريخ إنشاء الحساب</small><strong>{{ user.created_at|date_ar }}</strong></div><div><small>الحالة</small><strong class="user-status {% if user.active %}is-active{% else %}is-disabled{% endif %}">{{ 'نشط' if user.active else 'معطل' }}</strong></div></div>
+                    {% if not user.is_admin %}
+                    <form method="post" action="{{ url_for('update_admin_user', user_id=user.id) }}" class="user-permission-form"><input type="hidden" name="q" value="{{ query }}"><h3>صلاحيات المستخدم</h3><div class="permission-grid">{% for key, label in interface_options %}<label class="permission-item"><input type="checkbox" name="permission_{{ key }}" {% if key in permission_map[user.id] %}checked{% endif %}> <span>{{ label }}</span></label>{% endfor %}</div><button class="btn btn-primary" type="submit">حفظ الصلاحيات</button></form>
+                    <form method="post" action="{{ url_for('delete_admin_user', user_id=user.id) }}" onsubmit="return confirm('هل تريد حذف هذا المستخدم نهائيًا؟');"><button class="btn btn-danger" type="submit">حذف المستخدم</button></form>
+                    {% else %}<p class="admin-note">هذا هو حساب المدير الأساسي ولا يمكن حذفه أو تعديل صلاحياته.</p>{% endif %}
+                </div>
+            </details>
+            {% else %}<div class="empty-state">لا يوجد مستخدمون مطابقون للبحث.</div>{% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

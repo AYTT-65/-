@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}{{ product.name }}{% endblock %}
+{% block page_heading %}تفاصيل المنتج{% endblock %}
+{% block content %}
+<section class="product-detail panel">
+    <div class="detail-image">{% if product.image %}<img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}">{% else %}<span>{{ product.icon }}</span>{% endif %}</div>
+    <div class="detail-copy"><span class="category-tag">{{ product.category }}</span><h2>{{ product.name }}</h2><div class="detail-price-row"><strong class="detail-price">{{ product.price|currency }}</strong>{% if product.old_price > product.price %}<del>{{ product.old_price|currency }}</del><span class="discount-badge">خصم {{ ((1 - product.price / product.old_price) * 100)|round|int }}%</span>{% endif %}</div><p>{{ product.description or 'لا توجد مواصفات مضافة لهذا المنتج.' }}</p>{% if product.specifications %}<div class="detail-specifications"><h3>المواصفات</h3><p>{{ product.specifications }}</p></div>{% endif %}<div class="detail-stock">{% if product.stock > 0 %}متوفر في المخزون: {{ product.stock }}{% else %}غير متوفر حاليًا{% endif %}</div><div class="form-actions"><a href="{{ url_for('shop') }}" class="btn btn-light">رجوع للمنتجات</a>{% if product.stock > 0 %}<form class="detail-buy-form" method="post" action="{{ url_for('add_to_cart', product_id=product.id) }}"><label>الكمية<input type="number" name="quantity" min="1" max="{{ product.stock }}" value="1"></label><button class="btn btn-primary" type="submit">إضافة إلى السلة</button></form>{% endif %}</div></div>
+</section>
+{% endblock %}

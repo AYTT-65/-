@@ -1,0 +1,382 @@
+/* Login page only */
+.auth-shell {
+    min-height: 100vh;
+    padding: 28px clamp(22px, 6vw, 92px);
+    background: #f8fbff;
+    position: relative;
+    overflow: hidden;
+    color: #172840;
+    isolation: isolate;
+}
+.auth-shell::before {
+    content: "";
+    position: absolute;
+    width: 560px;
+    height: 560px;
+    top: -260px;
+    left: -180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(56, 116, 235, .12), transparent 68%);
+    pointer-events: none;
+}
+.auth-shell::after {
+    content: "";
+    position: absolute;
+    width: 420px;
+    height: 420px;
+    right: -160px;
+    bottom: -210px;
+    border: 1px solid rgba(48, 103, 207, .1);
+    border-radius: 50%;
+    box-shadow: 0 0 0 35px rgba(48, 103, 207, .025), 0 0 0 70px rgba(48, 103, 207, .02);
+    pointer-events: none;
+}
+.auth-brand { color: #172840; z-index: 2; }
+.auth-brand strong { font-family: 'Space Grotesk', sans-serif; font-size: 21px; }
+.auth-brand small { color: #8b9bb0; }
+.auth-shell .brand-mark {
+    background: linear-gradient(145deg, #3478ed, #1648aa);
+    box-shadow: 0 10px 20px rgba(30, 85, 190, .22);
+}
+.customer-entry {
+    width: 100%;
+    min-height: calc(100vh - 92px);
+    margin: 0;
+    position: relative;
+    z-index: 1;
+}
+.entry-copy {
+    position: absolute;
+    inset: 0;
+    min-height: 0;
+    padding: 0;
+    border-radius: 0;
+    background: linear-gradient(145deg, #123875 0%, #1e5fc5 58%, #4f8df1 100%);
+    box-shadow: inset 0 0 100px rgba(3, 25, 67, .2);
+    overflow: hidden;
+    color: #fff;
+    z-index: 1;
+}
+.entry-copy::before {
+    content: "";
+    position: absolute;
+    width: 440px;
+    height: 440px;
+    right: -170px;
+    top: -190px;
+    border: 1px solid rgba(255, 255, 255, .16);
+    border-radius: 50%;
+    box-shadow: 0 0 0 28px rgba(255, 255, 255, .035), 0 0 0 56px rgba(255, 255, 255, .025);
+    pointer-events: none;
+}
+.entry-copy::after {
+    content: "";
+    position: absolute;
+    inset: auto 8% 22px 8%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .24), transparent);
+    pointer-events: none;
+}
+.entry-copy-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 1;
+}
+.entry-kicker { color: #dbe9ff; letter-spacing: .3px; font-size: 12px; font-weight: 700; }
+.entry-live { display: flex; align-items: center; gap: 7px; color: #dceaff; font-size: 11px; }
+.entry-live i {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #65e0ae;
+    box-shadow: 0 0 0 5px rgba(101, 224, 174, .14);
+    animation: login-pulse 2s ease-in-out infinite;
+}
+.login-ad-slider { min-height: 390px; margin-top: 10px; position: relative; }
+.login-ad-slider { position: absolute; inset: 0; min-height: 0; margin: 0; }
+.login-ad-slide {
+    inset: 0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0;
+    transform: scale(.93) translateY(12px);
+    transition: opacity .75s ease, transform .9s cubic-bezier(.2, .75, .25, 1);
+    pointer-events: none;
+    position: absolute;
+}
+.login-ad-slide.is-active { opacity: 1; transform: scale(1) translateY(0); pointer-events: auto; }
+.login-ad-image { height: 100%; width: 100%; display: grid; place-items: center; position: relative; }
+.login-ad-image::after {
+    content: "";
+    position: absolute;
+    bottom: 17px;
+    width: 190px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(3, 25, 67, .28);
+    filter: blur(15px);
+    animation: login-shadow 3s ease-in-out infinite;
+}
+.login-ad-image img {
+    width: min(76vw, 980px);
+    height: min(76vh, 720px);
+    object-fit: contain;
+    position: relative;
+    z-index: 1;
+    filter: drop-shadow(0 25px 20px rgba(4, 18, 40, .3));
+    animation: login-product-float 4.5s ease-in-out infinite;
+}
+.login-ad-details { position: relative; z-index: 1; }
+.login-ad-details > span { color: #bcd4ff; font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; }
+.login-ad-details h2 { font-size: 28px; line-height: 1.3; margin: 4px 0; color: #fff; }
+.login-ad-details p { max-width: 340px; margin: 0 auto 5px; color: #d3e1f8; font-size: 12px; line-height: 1.7; }
+.login-ad-details strong { font-family: 'Space Grotesk', sans-serif; color: #fff; font-size: 16px; direction: rtl; display: block; }
+.login-ad-dots { bottom: 0; z-index: 3; }
+.login-ad-dot { width: 7px; height: 7px; background: #a9c7f5; opacity: .65; transition: .3s; }
+.login-ad-dot.is-active { width: 25px; background: #fff; opacity: 1; }
+.login-ad-empty { padding-top: 130px; color: #c7dcfb; }
+.entry-trust {
+    position: absolute;
+    bottom: 32px;
+    right: clamp(28px, 5vw, 62px);
+    left: clamp(28px, 5vw, 62px);
+    display: flex;
+    gap: 18px;
+    justify-content: center;
+    color: #cfe0fa;
+    font-size: 10px;
+    z-index: 1;
+}
+.entry-trust span { color: #8fbbff; font-size: 13px; }
+.customer-form {
+    position: relative;
+    z-index: 5;
+    width: min(430px, calc(100% - 40px));
+    margin: clamp(42px, 9vh, 100px) 8% 0 auto;
+    background: rgba(255, 255, 255, .94);
+    border: 1px solid #e6edf7;
+    border-radius: 24px;
+    padding: 38px 34px;
+    box-shadow: 0 24px 70px rgba(42, 72, 112, .14);
+    backdrop-filter: blur(12px);
+}
+.form-icon { background: #eaf1ff; color: #2864dc; box-shadow: 0 8px 18px rgba(40, 100, 220, .1); }
+.form-heading h2 { font-size: 28px; letter-spacing: -.2px; }
+.form-heading p { color: #8290a1; font-size: 12px; }
+.customer-form input { height: 50px; border: 1px solid #e2e9f2; background: #fbfcfe; border-radius: 12px; transition: .2s; }
+.customer-form input:focus { background: #fff; box-shadow: 0 0 0 4px rgba(40, 100, 220, .1); }
+.btn-wide { height: 50px; border-radius: 12px; box-shadow: 0 12px 22px rgba(40, 100, 220, .2); }
+.auth-footer { right: clamp(22px, 6vw, 92px); color: #9aaabc; }
+@keyframes login-product-float { 0%, 100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-9px) rotate(1deg); } }
+@keyframes login-shadow { 0%, 100% { transform: scaleX(.84); opacity: .55; } 50% { transform: scaleX(1); opacity: .8; } }
+@keyframes login-pulse { 0%, 100% { opacity: .65; } 50% { opacity: 1; } }
+@media (max-width: 800px) {
+    .auth-shell { padding: 22px 18px 30px; }
+    .customer-entry { min-height: calc(100vh - 82px); }
+    .customer-form { width: min(430px, calc(100% - 24px)); margin: 38px auto 0; padding: 28px 22px; }
+    .login-ad-image img { width: 92vw; height: 62vh; }
+    .auth-footer { position: relative; right: auto; bottom: auto; text-align: center; margin: 25px 0 0; }
+}
+
+/* Refined product showcase behind the login card */
+.entry-copy {
+    background:
+        radial-gradient(circle at 28% 48%, rgba(91, 157, 255, .3), transparent 22%),
+        radial-gradient(circle at 72% 18%, rgba(255, 255, 255, .12), transparent 18%),
+        linear-gradient(120deg, #0c2450 0%, #16468f 48%, #2e73d2 100%);
+}
+.entry-copy::before {
+    width: 640px;
+    height: 640px;
+    right: auto;
+    left: 8%;
+    top: 50%;
+    transform: translateY(-50%);
+    border-color: rgba(202, 226, 255, .18);
+    box-shadow: 0 0 0 22px rgba(202, 226, 255, .035), 0 0 0 64px rgba(202, 226, 255, .025), 0 0 0 118px rgba(202, 226, 255, .018);
+}
+.entry-copy::after {
+    inset: 0;
+    height: auto;
+    background: linear-gradient(90deg, rgba(5, 20, 51, .04) 0%, transparent 50%, rgba(3, 17, 44, .42) 100%);
+}
+.login-ad-image::before {
+    content: "";
+    position: absolute;
+    width: min(47vw, 600px);
+    height: min(47vw, 600px);
+    border-radius: 50%;
+    background: rgba(235, 245, 255, .08);
+    border: 1px solid rgba(235, 245, 255, .16);
+    box-shadow: inset 0 0 70px rgba(235, 245, 255, .08), 0 20px 80px rgba(2, 16, 44, .18);
+}
+.login-ad-image::after {
+    bottom: 13%;
+    width: min(29vw, 330px);
+    height: 28px;
+    background: rgba(2, 17, 48, .45);
+    filter: blur(20px);
+}
+.login-ad-image img {
+    width: min(48vw, 610px);
+    height: min(62vh, 600px);
+    filter: drop-shadow(0 34px 26px rgba(2, 16, 43, .38));
+}
+.login-ad-dots {
+    bottom: 30px;
+    padding: 9px 13px;
+    border: 1px solid rgba(255, 255, 255, .18);
+    border-radius: 20px;
+    background: rgba(7, 29, 69, .28);
+    backdrop-filter: blur(10px);
+}
+.customer-form {
+    margin-top: clamp(30px, 7vh, 78px);
+    border-color: rgba(255, 255, 255, .82);
+    box-shadow: 0 30px 80px rgba(1, 17, 45, .3), 0 0 0 1px rgba(56, 111, 205, .08);
+}
+@media (min-width: 801px) {
+    .customer-form { margin-right: 6%; }
+}
+@media (max-width: 800px) {
+    .entry-copy::before { width: 360px; height: 360px; left: 50%; top: 46%; }
+    .login-ad-image::before { width: 78vw; height: 78vw; }
+    .login-ad-image img { width: 78vw; height: 52vh; }
+    .login-ad-dots { bottom: 18px; }
+}
+
+/* Split-screen login layout */
+.auth-shell {
+    padding: 22px clamp(18px, 3vw, 46px);
+    background: #eef3fb;
+}
+.auth-brand {
+    position: relative;
+    z-index: 8;
+    color: #172840;
+}
+.customer-entry {
+    display: grid;
+    direction: ltr;
+    grid-template-columns: minmax(0, 1.15fr) minmax(360px, .85fr);
+    min-height: calc(100vh - 82px);
+    margin: 0 auto;
+    max-width: 1440px;
+    align-items: stretch;
+    gap: 0;
+    overflow: hidden;
+    border: 1px solid rgba(20, 67, 142, .16);
+    border-radius: 22px;
+    box-shadow: 0 24px 70px rgba(23, 48, 91, .16);
+    background: #fff;
+}
+.entry-copy {
+    position: relative;
+    inset: auto;
+    grid-column: 1;
+    grid-row: 1;
+    min-height: 0;
+    height: 100%;
+    border-radius: 0;
+    background:
+        radial-gradient(circle at 35% 42%, rgba(64, 148, 255, .3), transparent 23%),
+        linear-gradient(135deg, #071d4b 0%, #0d347a 48%, #1267cf 100%);
+    box-shadow: none;
+    z-index: 1;
+}
+.entry-copy::before {
+    width: 680px;
+    height: 680px;
+    left: 50%;
+    top: 52%;
+    border-color: rgba(164, 210, 255, .22);
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 0 24px rgba(164, 210, 255, .05), 0 0 0 72px rgba(164, 210, 255, .035), 0 0 0 130px rgba(164, 210, 255, .025);
+}
+.entry-copy::after {
+    background: linear-gradient(90deg, transparent, rgba(151, 204, 255, .28), transparent);
+    inset: auto 8% 74px;
+}
+.login-ad-slider {
+    position: absolute;
+    inset: 0;
+    min-height: 0;
+    margin: 0;
+}
+.login-ad-slide {
+    padding: 24px 7% 76px;
+    justify-content: center;
+    transform: scale(.97) translateY(14px);
+}
+.login-ad-image::before {
+    width: min(40vw, 610px);
+    height: min(40vw, 610px);
+    background: rgba(183, 222, 255, .08);
+    border-color: rgba(214, 237, 255, .23);
+    box-shadow: inset 0 0 90px rgba(214, 237, 255, .1), 0 24px 70px rgba(2, 16, 44, .2);
+}
+.login-ad-image img {
+    width: min(48vw, 640px);
+    height: min(68vh, 630px);
+    filter: drop-shadow(0 34px 26px rgba(1, 13, 39, .48));
+}
+.login-ad-image::after {
+    bottom: 13%;
+    width: min(28vw, 330px);
+    height: 25px;
+}
+.login-ad-dots {
+    bottom: 31px;
+    padding: 8px 14px;
+    border: 1px solid rgba(255, 255, 255, .22);
+    border-radius: 20px;
+    background: rgba(2, 19, 55, .38);
+    backdrop-filter: blur(10px);
+}
+.customer-form {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: center;
+    position: relative;
+    width: min(440px, calc(100% - 64px));
+    margin: 0 auto;
+    padding: 46px 38px;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: rgba(255, 255, 255, .98);
+    backdrop-filter: none;
+    direction: rtl;
+}
+.form-heading { text-align: center; }
+.form-icon { margin: 0 auto; }
+.form-heading h2 { margin-top: 18px; }
+.customer-form label { text-align: right; }
+.auth-footer { color: #8292a8; }
+@media (max-width: 800px) {
+    .auth-shell { padding: 14px; }
+    .customer-entry {
+        display: flex;
+        flex-direction: column;
+        min-height: calc(100vh - 68px);
+        border-radius: 18px;
+    }
+    .entry-copy {
+        order: 2;
+        min-height: 48vh;
+        height: 48vh;
+    }
+    .customer-form {
+        order: 1;
+        width: 100%;
+        padding: 30px 24px;
+    }
+    .login-ad-slide { padding: 14px 4% 60px; }
+    .login-ad-image::before { width: 72vw; height: 72vw; }
+    .login-ad-image img { width: 82vw; height: 42vh; }
+    .login-ad-dots { bottom: 17px; }
+}

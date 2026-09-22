@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}{{ page_title }}{% endblock %}
+{% block page_heading %}{{ page_title }}{% endblock %}
+{% block content %}
+<section class="form-layout product-entry-layout">
+    <div class="panel form-panel">
+        <div class="panel-heading">
+            <div>
+                <h2>{% if product %}تعديل المنتج{% else %}إضافة منتج جديد{% endif %}</h2>
+                <p>أدخل صورة المنتج واسمه ووصفه ثم احفظه ليظهر في المتجر.</p>
+            </div>
+        </div>
+        <form method="post" enctype="multipart/form-data" class="product-form">
+            <div class="form-grid">
+                <label>اسم المنتج <span>*</span><input required name="name" value="{{ product.name|default('') }}" placeholder="مثال: iPad 9"></label>
+                <label>القسم <span>*</span><input required name="category" value="{{ product.category|default('') }}" placeholder="أجهزة iPad، سماعات، شواحن"></label>
+                <label>رمز المنتج SKU <span>*</span><input required name="sku" value="{{ product.sku|default('') }}" placeholder="مثال: IPD-009"></label>
+                <label>الأيقونة البديلة<input name="icon" value="{{ product.icon|default('📦') }}"></label>
+                <label>السعر الحالي <span>*</span><div class="input-with-suffix"><input required type="number" min="0" step="0.01" name="price" value="{{ product.price|default('') }}"><b>د.ع</b></div></label>
+                <label>السعر القديم<input type="number" min="0" step="0.01" name="old_price" value="{{ product.old_price|default('0') }}"></label>
+                <label>قيمة الخصم<input type="number" min="0" step="0.01" name="discount" value="{{ product.discount|default('0') }}"><small class="field-help">السعر القديم والخصم يجعلان المنتج يظهر في العروض.</small></label>
+                <label>المخزون <span>*</span><input required type="number" min="0" name="stock" value="{{ product.stock|default('') }}"></label>
+            </div>
+            <label class="product-image-field">صورة المنتج <span>*</span><input type="file" name="image" accept="image/*" {% if not product %}required{% endif %}><small class="field-help">اختر صورة واضحة للمنتج. الصورة الحالية تبقى عند التعديل إذا لم ترفع صورة جديدة.</small></label>
+            <label class="product-description-field">وصف المنتج <span>*</span><textarea name="description" rows="4" {% if not product %}required{% endif %} placeholder="اكتب وصفاً مختصراً وواضحاً للمنتج">{{ product.description|default('') }}</textarea></label>
+            <label>المواصفات<textarea name="specifications" rows="3" placeholder="مثال: شاشة 10.2 بوصة، ذاكرة 64GB">{{ product.specifications|default('') }}</textarea></label>
+            <div class="product-switches">
+                <label class="check-label"><input type="checkbox" name="featured" {% if product and product.featured %}checked{% endif %}> منتج مميز</label>
+                <label class="check-label"><input type="checkbox" name="advertised" {% if product and product.advertised %}checked{% endif %}> إظهار في الإعلان</label>
+                <label class="check-label"><input type="checkbox" name="visible" {% if not product or product.visible %}checked{% endif %}> ظاهر في المتجر</label>
+            </div>
+            <div class="form-actions">
+                <a class="btn btn-light" href="{{ url_for('products') }}">إلغاء</a>
+                <button class="btn btn-primary" type="submit">{% if product %}حفظ التعديلات{% else %}إضافة المنتج{% endif %}</button>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

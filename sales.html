@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}المبيعات{% endblock %}
+{% block page_heading %}المبيعات ونقطة البيع{% endblock %}
+{% block content %}
+<section class="section-toolbar"><div><p class="muted">أنشئ فاتورة جديدة وسيتحدث المخزون تلقائيًا.</p></div><span class="date-chip">{{ sales|length }} آخر الفواتير</span></section>
+<div class="sales-layout">
+	<section class="panel sale-panel">
+		<div class="panel-heading"><div><h2>فاتورة بيع جديدة</h2><p>حدد الكميات للمنتجات التي تريد بيعها</p></div><span class="step-badge">01 / 01</span></div>
+		<form class="sale-search" method="get"><input type="search" name="q" value="{{ query }}" placeholder="ابحث باسم المنتج أو رمز المنتج..."><button class="btn btn-light" type="submit">بحث</button></form>
+		<form method="post" id="sale-form"><div class="sale-products">
+			{% for product in products %}<div class="sale-product"><span class="product-emoji">{{ product.icon }}</span><div class="sale-product-info"><strong>{{ product.name }}</strong><small>{{ product.sku }} · {{ product.price|currency }}</small></div><span class="available-count">متاح {{ product.stock }}</span><input class="quantity-input" type="number" name="quantity_{{ product.id }}" min="0" max="{{ product.stock }}" value="0" data-price="{{ product.price }}"><span class="qty-label">وحدة</span></div>{% else %}<div class="empty-state">لا توجد منتجات متاحة للبيع.</div>{% endfor %}
+		</div><div class="sale-summary"><div><span>الإجمالي</span><strong id="sale-total">0.00 د.ع</strong></div><button class="btn btn-primary" type="submit">تأكيد البيع <span>←</span></button></div></form>
+	</section>
+	<section class="panel history-panel"><div class="panel-heading"><div><h2>سجل الفواتير</h2><p>آخر عمليات البيع</p></div></div><div class="invoice-list">{% for sale in sales %}<a href="{{ url_for('sale_detail', sale_id=sale.id) }}" class="invoice-row"><div class="invoice-number">#{{ '%04d'|format(sale.id) }}</div><div class="invoice-info"><strong>{{ sale.customer_name }}</strong><small>{{ sale.created_at|date_ar }}</small></div><b>{{ sale.total|currency }}</b><span>←</span></a>{% else %}<div class="empty-state">لم يتم تسجيل أي فاتورة بعد.</div>{% endfor %}</div></section>
+</div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}دخول الزبون{% endblock %}
+{% block content %}
+<section class="customer-entry">
+    <div class="entry-copy">
+        <div class="login-ad-slider" data-login-slider aria-live="polite">
+            {% for product in login_products %}
+            <article class="login-ad-slide {% if loop.first %}is-active{% endif %}">
+                <div class="login-ad-image"><img src="{{ url_for('static', filename=product.image) }}" alt="صورة المنتج"></div>
+            </article>
+            {% else %}<div class="login-ad-empty">أضف صور المنتجات من لوحة التحكم لتظهر هنا.</div>{% endfor %}
+            <div class="login-ad-dots">{% for product in login_products %}<button class="login-ad-dot {% if loop.first %}is-active{% endif %}" data-login-dot="{{ loop.index0 }}" aria-label="تغيير الإعلان"></button>{% endfor %}</div>
+        </div>
+    </div>
+    <form method="post" class="panel customer-form">
+        <div class="form-heading"><span class="form-icon">↗</span><h2>تسجيل الدخول</h2><p>أدخل بيانات حسابك للمتابعة إلى المتجر.</p></div>
+        <label>اسم المستخدم أو البريد الإلكتروني <span>*</span><input required name="username_or_email" autocomplete="username" placeholder="مثال: ahmed@email.com"></label>
+        <label>كلمة المرور <span>*</span><input required type="password" name="password" autocomplete="current-password" placeholder="أدخل كلمة المرور"></label>
+        <div class="form-options"><label class="check-label"><input type="checkbox"> تذكرني</label><a href="{{ url_for('customer_entry') }}">نسيت كلمة المرور؟</a></div>
+        <button class="btn btn-primary btn-wide" type="submit">تسجيل الدخول <span>←</span></button>
+        <p class="register-line">ليس لديك حساب؟ <a href="{{ url_for('register') }}">إنشاء حساب جديد</a></p>
+    </form>
+</section>
+{% endblock %}

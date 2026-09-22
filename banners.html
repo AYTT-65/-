@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block title %}إدارة الإعلانات{% endblock %}
+{% block page_heading %}إعلانات المتجر{% endblock %}
+{% block content %}
+<section class="section-toolbar"><div><p class="muted">تحكم في العروض التي تظهر تلقائيًا في واجهة المتجر.</p></div><a href="{{ url_for('new_banner') }}" class="btn btn-primary">＋ إضافة إعلان</a></section>
+<section class="panel banner-admin-list"><div class="panel-heading"><div><h2>كل الإعلانات</h2><p>رتّب الإعلان وحدد حالته ومدة ظهوره.</p></div></div>{% for banner in banners %}<article class="banner-admin-row"><div class="banner-thumb">{% if banner.image %}<img src="{{ url_for('static', filename=banner.image) }}" alt="">{% else %}<span>⌁</span>{% endif %}</div><div class="banner-admin-copy"><strong>{{ banner.title }}</strong><span>{{ banner.product_name or 'إعلان مستقل' }} · {{ banner.duration }} ثوانٍ · ترتيب {{ banner.sort_order }}</span><small>{{ banner.description }}</small></div><span class="status-pill {{ 'status-on' if banner.active else 'status-off' }}">{{ 'نشط' if banner.active else 'متوقف' }}</span><div class="card-actions"><a class="btn btn-light" href="{{ url_for('edit_banner', banner_id=banner.id) }}">تعديل</a><form method="post" action="{{ url_for('delete_banner', banner_id=banner.id) }}" onsubmit="return confirm('حذف هذا الإعلان؟');"><button class="btn btn-danger" type="submit">حذف</button></form></div></article>{% else %}<div class="empty-state">لا توجد إعلانات بعد. أضف أول إعلان ليظهر في المتجر.</div>{% endfor %}</section>
+{% endblock %}

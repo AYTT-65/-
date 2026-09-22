@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}حجز المنتج{% endblock %}
+{% block page_heading %}حجز المنتج{% endblock %}
+{% block content %}
+<section class="reservation-layout">
+    <div class="panel reservation-product">{% for product, quantity, line_total in items %}<div class="checkout-item"><div class="reservation-product-image">{% if product.image %}<img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}">{% else %}<span>{{ product.icon }}</span>{% endif %}</div><div><h2>{{ product.name }}</h2><p>{{ product.price|currency }} × {{ quantity }}</p><strong>{{ line_total|currency }}</strong></div></div>{% endfor %}{% if single_product %}<label>الكمية المطلوبة <span>*</span><input required type="number" name="quantity" data-price="{{ items[0][0].price }}" min="1" max="{{ max_quantity }}" value="{{ reservation.quantity|default(1) if reservation else 1 }}"></label>{% endif %}<div class="checkout-total"><span>المبلغ الكامل</span><strong id="reservation-total">{{ total|currency }}</strong></div></div>
+    <form method="post" class="panel reservation-form">
+        <div class="panel-heading"><div><h2>معلومات الحجز</h2><p>أدخل معلوماتك حتى نتواصل معك لتأكيد الحجز.</p></div></div>
+        <label>الاسم الثلاثي <span>*</span><input required name="customer_name" value="{{ reservation.customer_name|default('') if reservation else '' }}" placeholder="مثال: أحمد محمد علي"></label>
+        <label>رقم التواصل <span>*</span><input required name="customer_number" inputmode="numeric" pattern="[0-9]+" value="{{ reservation.customer_number|default('') if reservation else '' }}" placeholder="07xxxxxxxxx"></label>
+        <label>العنوان بالضبط <span>*</span><textarea required minlength="10" name="customer_address" rows="3" placeholder="المحافظة، القضاء، المنطقة، الشارع، أقرب نقطة دالة...">{{ reservation.customer_address|default('') if reservation else '' }}</textarea><small class="field-help">اكتب العنوان بالتفصيل: المنطقة والشارع وأقرب نقطة دالة.</small></label>
+        <label>المحافظة <span>*</span><select required name="governorate"><option value="">اختر المحافظة</option>{% for item in ['بغداد','الأنبار','بابل','البصرة','كربلاء','النجف','نينوى','دهوك','أربيل','السليمانية','ديالى','ذي قار','صلاح الدين','كركوك','ميسان','المثنى','واسط','القادسية'] %}<option value="{{ item }}" {% if reservation and reservation.governorate == item %}selected{% endif %}>{{ item }}</option>{% endfor %}</select></label>
+        <div class="form-actions"><a href="{{ url_for('shop') }}" class="btn btn-light">رجوع للمنتجات</a><button class="btn btn-primary" type="submit">تأكيد الحجز</button></div>
+    </form>
+</section>
+{% endblock %}
