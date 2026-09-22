@@ -13,7 +13,7 @@ from werkzeug.utils import secure_filename
 BASE_DIR = Path(__file__).resolve().parent
 DATABASE = BASE_DIR / "store.db"
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder=".", template_folder=".")
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "store-local-secret-key")
 app.config["DATABASE"] = DATABASE
 app.config["UPLOAD_FOLDER"] = BASE_DIR / "static" / "uploads"
